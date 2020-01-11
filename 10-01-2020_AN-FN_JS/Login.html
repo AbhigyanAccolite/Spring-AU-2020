@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="jumbotron">
+            <h1 class="display-4">Hey There!</h1>
+            <p class="lead">This is a simple Login Form.</p>
+            <p>Password should have:</p>
+            <ul>
+              <li>atleast one uppercase character</li>
+              <li>atleast one lowercase character</li>
+              <li>atleast password length should be 8</li>
+              <li>should have atleast one of the mentioned characters: [$, *, @] </li>
+            </ul>
+        </div>
+
+        <div class="card mx-auto" center style="width: 18rem;">
+          <form>
+            <div class="card-body">
+              <h5 class="card-title">Login</h5>
+              <label>Username</label>
+              <input type="input" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" id="uname">
+              <label>Password</label>
+              <input type="password" class="form-control" placeholder="password" aria-label="Text input with dropdown button" required id="pw">
+              <label>Confirm Password</label>
+              <p id="status"></p>
+              <input type="password" class="form-control" placeholder="confirm Password" aria-label="Text input with dropdown button" required id="cpw">
+              <p></p>
+              <button type="submit" onclick="checkCondition" id="submit" center class="btn btn-dark" required>Submit </button>     
+            </div>
+          </form>           
+        </div>
+          
+    </body>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+      document.getElementById("submit").addEventListener("click", checkCondition);
+
+      function checkCondition() {
+
+        var password = document.getElementById("pw").value;
+        console.log(password);        
+        var confirmPassword = document.getElementById("cpw").value;
+        console.log(confirmPassword);
+        var upperFlag = false;
+        var lowerFlag = false;
+        var specialCharFlag = false;
+      
+        var reg1 = /abc/;
+        var reg2 = /[a-z]+/;
+        var reg3 = /[A-Z]+/;
+        var reg4 = /[$*@]/;       
+
+
+        if(password == confirmPassword && password.length >= 8 && reg1.test(password) && reg2.test(password)
+              && reg3.test(password) && reg4.test(password)) {
+          document.getElementById("status").style.color = "green";
+          document.getElementById("status").innerHTML = "Password meets the condition :D";
+          alert("password: " +password + "\n" + "confirm password: " + confirmPassword + "\n\n Password meets the condition :D");
+        }          
+        else {
+          document.getElementById("status").style.color = "red";
+          document.getElementById("status").innerHTML = "Password does not meet the conditions  :'(";
+          alert("password: " +password + "\n" + "confirm password: " + confirmPassword + "\n\nPassword doesnt meet the condition :'(");
+        }          
+      }
+      
+
+    </script>
+</html>
