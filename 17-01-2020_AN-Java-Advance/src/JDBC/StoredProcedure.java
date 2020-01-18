@@ -17,7 +17,7 @@ import java.sql.CallableStatement;
  
 public class StoredProcedure {
  
-    public static void getSkills(int managerId) {
+    public static void getManager(int managerId) {
         // 
         String query = "{ call EmployeeManagers(?) }";
         ResultSet rs;
