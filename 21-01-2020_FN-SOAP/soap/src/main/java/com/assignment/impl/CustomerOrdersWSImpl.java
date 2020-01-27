@@ -24,7 +24,7 @@ import com.akash.ws.trainings.UpdateOrdersResponse;
 public class CustomerOrdersWSImpl implements CustomerOrdersPortType{
 
 	Map<Integer,List<Order>> custOrders=new HashMap<>();
-	int currenntId;
+	int currentId;
 	
 	public CustomerOrdersWSImpl() {
 		init();
