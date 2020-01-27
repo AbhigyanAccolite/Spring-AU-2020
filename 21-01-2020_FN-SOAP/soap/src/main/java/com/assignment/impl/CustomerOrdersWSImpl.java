@@ -1,6 +1,6 @@
 package com.assignment.impl;
 
-import java.math.BigInteger;
+import java.math.Integer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +23,7 @@ import com.akash.ws.trainings.UpdateOrdersResponse;
 @Features(features="org.apache.cxf.feature.LoggingFeature")
 public class CustomerOrdersWSImpl implements CustomerOrdersPortType{
 
-	Map<BigInteger,List<Order>> customerOrders=new HashMap<>();
+	Map<Integer,List<Order>> custOrders=new HashMap<>();
 	int currenntId;
 	
 	public CustomerOrdersWSImpl() {
@@ -31,52 +31,81 @@ public class CustomerOrdersWSImpl implements CustomerOrdersPortType{
 	}
 	
 	public void init() {
-		List<Order> orders=new ArrayList<>();
+		List<Order> listOfOrders=new ArrayList<>();
 		Order order = new Order();
-		order.setId(BigInteger.valueOf(1));
-		
-		Product product=new Product();
-		product.setId("1");
-		product.setDescription("Amul");
-		product.setQuantity(BigInteger.valueOf(3));
-		order.getProduct().add(product);
-		orders.add(order);
-		
-		customerOrders.put(BigInteger.valueOf(++currenntId), orders);
+		order.setId(Integer.valueOf(1));		
+		Product item=new Product();
+
+
+		product.setId("34");
+		product.setDescription("Abhigyan");
+		product.setQuantity(Integer.valueOf(1));
+		order.getProduct().add(item);
+		listOfOrders.add(order);		
+		custOrders.put(Integer.valueOf(++currentId), orders);
 	}
 	
 	@Override
 	public GetOrdersResponse getOrders(GetOrdersRequest request) {
-		BigInteger customerId=request.getCustomerId();
-		List<Order> orders = customerOrders.get(customerId);
-		GetOrdersResponse response=new GetOrdersResponse();
-		response.getOrder().addAll(orders);
-		return response;
+		Integer id=request.getCustomerId();
+		List<Order> list_Of_Orders = customerOrders.get(id);
+
+
+		GetOrdersResponse responseGetObject =new GetOrdersResponse();
+		responseGetObject.getOrder().addAll(list_Of_Orders);
+		
+		return responseGetObject;
 	}
 
 	@Override
 	public CreateOrdersResponse createOrders(CreateOrdersRequest request) {
-		BigInteger customerId=request.getCustomerId();
+		Integer id =request.getCustomerId();
 		Order order=request.getOrder();
-		List<Order> orders=customerOrders.get(customerId);
-		orders.add(order);
-		CreateOrdersResponse response=new CreateOrdersResponse();
-		response.setResult(true);
- 		return response;
+		List<Order> list_Of_Orders =customerOrders.get(id);
+
+
+		list_Of_Orders.add(order);
+		CreateOrdersResponse responseCreateObject = new CreateOrdersResponse();
+		responseCreateObject.setResult(true);
+		
+ 		return responseCreateObject;
 	}
 
 	@Override
 	public DeleteOrdersResponse deleteOrders(DeleteOrdersRequest request) {
-		BigInteger customerId = request.getCustomerId();
-		// The order that must be removed
-		BigInteger orderId = request.getOrderId();
-		List<Order> orders=customerOrders.get(customerId);
+
+		//Finding the customerId & orderID.. Putting the order on the list & updating the list in the cutstomer order list
+		Integer id = request.getCustomerId();		
+		Integer order_Id = request.getOrderId();
+		List<Order> list_Of_Orders=customerOrders.get(id);
+
+
 		orders.remove(orderId);
-		customerOrders.remove(customerId);
-		customerOrders.put(customerId, orders);
-		DeleteOrdersResponse response = new DeleteOrdersResponse();
-		response.setResult(true);
-		return response;
+		custOrders.remove(id);
+		custOrders.put(idd, list_Of_Orders);
+		DeleteOrdersResponse responseDeleteObject = new DeleteOrdersResponse();
+		responseDeleteObject.setResult(true);
+		
+		return responseDeleteObject;
+	}
+
+	@Override
+	public UpdateOrdersResponse updateOrders(UpdateOrdersRequest request) {
+		//Deleting the order with the id. Inserting the updated orders in the customer order list
+		Integer id =request.getCustomerId();
+		Integer order_Id = request.getOrderId();
+		Order order=request.getOrder();		
+		List<Order> orders=customerOrders.get(id);
+
+
+		orders.remove(order_Id);
+		orders.add(order);
+		custOrders.remove(id);
+		custOrders.put(id, orders);
+		UpdateOrdersResponse responseUpdateObject = new UpdateOrdersResponse();
+		responseUpdateObject.setResult(true);
+		
+		return responseUpdateObject;
 	}
 
 	
