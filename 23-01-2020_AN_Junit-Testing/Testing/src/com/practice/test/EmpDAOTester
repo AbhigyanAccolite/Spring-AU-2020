@@ -1,0 +1,87 @@
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import com.practice.test.EmpDAO';
+import com.practice.test.EmployeeDAOImpl;
+
+
+@RunWith(MockitoJUnitRunner.class)
+public class TestEmployeeDAO {
+
+	@InjectMocks
+	EmployeeDAOImpl mockEmployeeDAO = new EmployeeDAOImpl();
+
+	@Mock
+	EmployeeDAO EmpDAO = mock(EmployeeDAO.class);
+	
+	@Mock
+	Employee employee;
+
+	private Employee emp = new Employee("Omkar", "Pawar", "Manager", "I.T");
+	private Employee emp1 = new Employee();
+
+	private List<Employee> list = new ArrayList<>();
+
+	@Test
+	public void testEmployeeDao() throws SQLException {
+		this.list.add(new Employee("Gaurav", "Yadav", "SWE Intenrn", "SWE"));
+		this.list.add(new Employee("Darshan", "Patil", "Associate Developer", "Tech Support"));
+
+		doAnswer(invo -> {
+			testEmp = (Employee) invocate;
+			Assert.assertEquals(this.emp.getDesignation(), "Manager");
+			Assert.assertEquals(this.emp.getDepartment(), "I.T");
+			Assert.assertNotNull(this.emp.getId());
+
+			System.out.println(this.emp);
+			return null;
+		})
+		.when(EmpDAO).put(employee);
+
+
+		doAnswer(invo -> {
+			Employee emp = (Employee) invo;			
+			Assert.assertEquals(emp.getId(), 3);
+			System.out.println(emp.toString());
+			return null;
+		})
+		.when(testEmpDAO)
+		.put(employee);
+
+
+		doAnswer(invo -> {
+			Employee emp = (Employee) invo;
+			Assert.assertFalse(emp.getId() == 0);
+			System.out.println("Employee Deletion for id= " + invo);
+			return null;
+		}).when(testEmpDAO)
+		.delete(1);
+
+		when(EmpDAO.get(0))
+		.thenReturn(this.emp1);
+
+		when(EmpDAO.list())
+		.thenReturn(this.list);
+
+
+		testEmpDAO.saveOrUpdate(new Employee("Abhigyan", "Nayak", "Intern", "SDE"));
+		testEmpDAO.saveOrUpdate(new Employee(0, "Rohan", "pawar", "Intern", "I.T"));
+		Employee employee = EmpDAO.get(0);
+		List<Employee> list = EmpDAO.list();
+		Assert.assertEquals(list.size(), 2);
+		System.out.println(employee);
+	}
+
+}
